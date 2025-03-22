@@ -8,9 +8,11 @@ public class TruckHome : MonoBehaviour
     public PlayerData playerInfo;
     public TruckInfo truckInfo;
     private TextMeshProUGUI userNote;
+    private LoadManager loadManager;
 
     void Start()
     {
+        loadManager = GameObject.FindWithTag("Loader").GetComponent<LoadManager>();
         currentName = gameObject.name;
         userNote = GameObject.FindWithTag("UserNotifications").GetComponent<TextMeshProUGUI>();
 
@@ -28,13 +30,11 @@ public class TruckHome : MonoBehaviour
             else if (currentName.Equals("Fuel") && truckInfo.fuel!=truckInfo.maxFuel && playerInfo.withDrawMoeny(9))
             {
                 truckInfo.fueling();
-                userNote.text = "Hold E to fuel\n$3";
+                userNote.text = "Press E to fuel\n$3";
             }
             else if (currentName.Equals("Leave"))
             {
-                Debug.Log("leave");
-                userNote.enabled = true;
-                userNote.text = "Hold E to DEPART";
+                loadManager.LoadForest();
             }
         }
     }
@@ -55,7 +55,7 @@ public class TruckHome : MonoBehaviour
             {
                 Debug.Log("fuel");
                 userNote.enabled = true;
-                userNote.text = "Hold E to fuel\n$3";
+                userNote.text = "Press E to fuel\n$3";
             }
             else if (currentName.Equals("Leave"))
             {
@@ -71,7 +71,6 @@ public class TruckHome : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             isInTrigger=false;
-            TextMeshProUGUI userNote = GameObject.FindWithTag("UserNotifications").GetComponent<TextMeshProUGUI>();
             userNote.enabled = false;
         }
     }
