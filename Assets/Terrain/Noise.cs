@@ -36,8 +36,8 @@ public class Noise : MonoBehaviour
                 float noiseHeight = 0;
                 for (int i = 0; i < octaves; i++)
                 {
-                    float sampleX = (x-halfWidth) / scale * frequency + octaveOffsets[i].x;
-                    float sampleY = (y-halfHeight) / scale * frequency + octaveOffsets[i].y;
+                    float sampleX = (x-halfWidth) / scale * frequency + octaveOffsets[i].x*frequency;
+                    float sampleY = (y-halfHeight) / scale * frequency + octaveOffsets[i].y*frequency;
                     float perlinValue = Mathf.PerlinNoise(sampleX, sampleY) * 2 - 1;
                     noiseHeight += perlinValue * amplitude;
                     amplitude *= persistance;
