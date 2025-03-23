@@ -39,9 +39,9 @@ public class EndlessTerrain : MonoBehaviour
         int currentChunkCoordX = Mathf.RoundToInt(viewerPosition.x / chunkSize);
         int currentChunkCoordY = Mathf.RoundToInt(viewerPosition.y / chunkSize);
 
-        for (int yOffset = -chunkVisibleInviewDst; yOffset < chunkVisibleInviewDst; yOffset++)
+        for (int yOffset = -chunkVisibleInviewDst; yOffset <= chunkVisibleInviewDst; yOffset++)
         {
-            for (int xOffset = -chunkVisibleInviewDst; xOffset < chunkVisibleInviewDst; xOffset++)
+            for (int xOffset = -chunkVisibleInviewDst; xOffset <= chunkVisibleInviewDst; xOffset++)
             {
                 Vector2 viewedChunkCoord = new Vector2(currentChunkCoordX + xOffset, currentChunkCoordY + yOffset);
                 if (terrainChunkDictionary.ContainsKey(viewedChunkCoord))
@@ -66,8 +66,8 @@ public class EndlessTerrain : MonoBehaviour
         Bounds bounds;
         public TerrainChunk(Vector2 coord, int size, Transform parent)
         {
-            bounds = new Bounds(position, Vector2.one * size);
             position = coord * size;
+            bounds = new Bounds(position, Vector2.one * size);
             Vector3 positionV3 = new Vector3(position.x, 0, position.y);
             meshObject = GameObject.CreatePrimitive(PrimitiveType.Plane);
             meshObject.transform.position = positionV3;
