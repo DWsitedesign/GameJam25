@@ -27,7 +27,21 @@ public class MapGenerator : MonoBehaviour
 
     public Vector2 offset;
 
-    public void GenerateMap()
+public void DrawMapInEditor(){
+    MapData mapData = GenerateMapData();
+    MapDisplay display = FindFirstObjectByType<MapDisplay>();
+        if(drawMode== DrawMode.NoiseMap){
+
+        display.DrawTexture(TextureGenerator.TextureFromHeightMap(mapData.heightMap));
+        } else if (drawMode == DrawMode.ColorMap){
+        display.DrawTexture(TextureGenerator.TextureFromColorMap(mapData.colorMap, mapChunkSize, mapChunkSize));
+        } else if (drawMode==DrawMode.Mesh){
+            display.DrawMesh(MeshGen.GenerateTerrainMesh(mapData.heightMap, meshHeightMultiplier, meshHeightCurve, levelOfDetail),TextureGenerator.TextureFromColorMap(mapData.colorMap,mapChunkSize,mapChunkSize));
+        }
+}
+
+
+    MapData GenerateMapData()
     {
         float[,] noiseMap = Noise.GenerateNoiseMap(mapChunkSize, mapChunkSize, seed, noiseScale, octaves, persistance, lacunarity, offset);
 
@@ -48,15 +62,7 @@ public class MapGenerator : MonoBehaviour
             }
         }
 
-        MapDisplay display = FindFirstObjectByType<MapDisplay>();
-        if(drawMode== DrawMode.NoiseMap){
-
-        display.DrawTexture(TextureGenerator.TextureFromHeightMap(noiseMap));
-        } else if (drawMode == DrawMode.ColorMap){
-        display.DrawTexture(TextureGenerator.TextureFromColorMap(colorMap, mapChunkSize, mapChunkSize));
-        } else if (drawMode==DrawMode.Mesh){
-            display.DrawMesh(MeshGen.GenerateTerrainMesh(noiseMap, meshHeightMultiplier, meshHeightCurve, levelOfDetail),TextureGenerator.TextureFromColorMap(colorMap,mapChunkSize,mapChunkSize));
-        }
+        return new MapData(noiseMap, colorMap);
     }
 
     void OnValidate()
@@ -77,5 +83,16 @@ public class MapGenerator : MonoBehaviour
         public string name;
         public float height;
         public Color color;
+    }
+}
+
+
+public struct MapData{
+    public float[,] heightMap;
+    public Color[] colorMap;
+
+    public MapData(float [,] heightmap, Color[] colormap){
+        heightMap=heightmap;
+        colorMap=colormap;
     }
 }
