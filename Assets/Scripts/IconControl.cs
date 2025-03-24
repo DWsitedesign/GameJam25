@@ -13,7 +13,7 @@ public class IconControl : MonoBehaviour
         yvalue = transform.position;
         timeOffset = Random.Range(0, 2f*Mathf.PI);
     }
-    void Update()
+    void FixedUpdate()
     {
         transform.position = yvalue + new Vector3(0, (float)(Mathf.Sin(timeOffset+Time.time)*YMovement), 0);
         this.transform.Rotate(new Vector3(0, RotateSpeed*Time.deltaTime, 0));

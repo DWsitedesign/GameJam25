@@ -34,6 +34,12 @@ public class MapGenerator : MonoBehaviour
     Queue<MapThreadInfo<MapData>> mapDataThreadInfoQueue = new Queue<MapThreadInfo<MapData>>();
     Queue<MapThreadInfo<MeshData>> meshDataThreadInfoQueue = new Queue<MapThreadInfo<MeshData>>();
 
+
+    void Awake()
+    {
+        DrawMapInEditor();
+    }
+
     public void DrawMapInEditor()
     {
         MapData mapData = GenerateMapData();
