@@ -1,11 +1,13 @@
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.XR;
 
 public class MapDisplay : MonoBehaviour
 {
     public Renderer textureRender;
     public MeshFilter meshFilter;
     public MeshRenderer meshRenderer;
+    public MeshCollider meshCollider;
     public void DrawTexture(Texture2D texture)
     {
 
@@ -15,7 +17,9 @@ public class MapDisplay : MonoBehaviour
     }
     public void DrawMesh(MeshData meshData, Texture2D texture)
     {
-        meshFilter.sharedMesh = meshData.CreateMesh();
+        Mesh meshInfo = meshData.CreateMesh();
+        meshFilter.sharedMesh = meshInfo;
         meshRenderer.sharedMaterial.mainTexture = texture;
+        meshCollider.sharedMesh = meshInfo;
     }
 }
