@@ -22,4 +22,11 @@ public class TruckInfo : MonoBehaviour
             fuel=maxFuel;
         }
     }
+    internal void pickupFuel(){
+        fuel+=15;
+        if(fuel>maxFuel){
+            fuel=maxFuel;
+        }
+    }
+
 }

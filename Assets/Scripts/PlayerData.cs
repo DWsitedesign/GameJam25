@@ -5,6 +5,7 @@ public class PlayerData : MonoBehaviour
 {
     public int money = 100;
     public int health = 100;
+    public int maxHealth = 100;
     public TextMeshProUGUI moneyCounter;
 
     public bool depositMoney(int value){
@@ -20,5 +21,14 @@ public class PlayerData : MonoBehaviour
         money-=value;
         moneyCounter.text="$"+money;
         return true;
+    }
+    internal void pickupHealth(){
+        health+=15;
+        if(health>maxHealth){
+            health=maxHealth;
+        }
+    }
+    internal void pickupMoney(){
+        depositMoney(20);
     }
 }
