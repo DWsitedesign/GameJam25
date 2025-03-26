@@ -56,6 +56,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 748fa2f9442f29642977544adbadb508, type: 3}
+      propertyPath: m_TagString
+      value: CharacterInteractableLong
+      objectReference: {fileID: 0}
     - target: {fileID: 2497298832091251032, guid: 748fa2f9442f29642977544adbadb508, type: 3}
       propertyPath: m_Layer
       value: 10
@@ -105,6 +109,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 748fa2f9442f29642977544adbadb508, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3331669536420685570}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 748fa2f9442f29642977544adbadb508, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4581087786888849069}
     - targetCorrespondingSourceObject: {fileID: 2497298832091251032, guid: 748fa2f9442f29642977544adbadb508, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4662426365574744077}
@@ -135,6 +142,21 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 4, y: 1, z: 4}
   m_Center: {x: 0, y: 0.45, z: 0}
+--- !u!114 &4581087786888849069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 266841682137154019}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 117469991fe2ecc4086c1b214e9a8ab2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  message: Hold E to Chop
+  callBackHolder: {fileID: 0}
+  callBackType: 9
 --- !u!1 &3304897512435662314 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2497298832091251032, guid: 748fa2f9442f29642977544adbadb508, type: 3}

@@ -92,6 +92,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 9497d1b7948a5484fbc65b7cbee17a97, type: 3}
+      propertyPath: m_TagString
+      value: CharacterInteractableLong
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 65702495048144492, guid: 9497d1b7948a5484fbc65b7cbee17a97, type: 3}
@@ -101,6 +105,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9497d1b7948a5484fbc65b7cbee17a97, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8915671391663862677}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9497d1b7948a5484fbc65b7cbee17a97, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2779054285252483477}
     - targetCorrespondingSourceObject: {fileID: -9140425815510177238, guid: 9497d1b7948a5484fbc65b7cbee17a97, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3742747808752315435}
@@ -158,3 +165,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 8, y: 2, z: 8}
   m_Center: {x: 0, y: 1.54, z: 0}
+--- !u!114 &2779054285252483477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5602503475569689733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 117469991fe2ecc4086c1b214e9a8ab2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  message: Hold E to Chop
+  callBackHolder: {fileID: 0}
+  callBackType: 9

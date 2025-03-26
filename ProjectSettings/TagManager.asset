@@ -10,6 +10,9 @@ TagManager:
   - CharacterInteractable
   - CharacterPickup
   - CharacterInteractableLong
+  - CharacterSplit
+  - CharacterSaw
+  - CharacterMill
   layers:
   - Default
   - TransparentFX

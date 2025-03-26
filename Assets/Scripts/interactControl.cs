@@ -11,7 +11,8 @@ public class interactControl : MonoBehaviour
 
     public enum callBackTypes
     {
-        truckRepair, truckFuel, truckLog, goHome, goForest, goShop, pickupFuel, pickupHealth, pickupMoney, chopTree, pickupLog
+        truckRepair, truckFuel, truckLog, goHome, goForest, goShop, pickupFuel, pickupHealth, pickupMoney, chopTree, pickupLog,
+        sellLog, sellTimber, upgrade
 
     }
 
@@ -71,6 +72,26 @@ public class interactControl : MonoBehaviour
             return () =>
             {
                 GameObject.FindWithTag("Player").GetComponent<PlayerControls>().PickupObj(gameObject);
+            };
+        }
+        else if (callBackType == callBackTypes.sellLog)
+        {
+            return () =>
+            {
+                GameObject.FindWithTag("Player").GetComponent<PlayerData>().sellLogs();
+            };
+        }
+        else if (callBackType == callBackTypes.sellTimber)
+        {
+            return () =>
+            {
+                GameObject.FindWithTag("Player").GetComponent<PlayerData>().sellTimber();
+            };
+        }else if (callBackType == callBackTypes.upgrade)
+        {
+            return () =>
+            {
+                gameObject.GetComponent<LevelUpScript>().levelUp();
             };
         }
 

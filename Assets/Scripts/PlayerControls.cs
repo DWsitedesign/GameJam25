@@ -8,8 +8,6 @@ public class PlayerControls : MonoBehaviour
 {
     public Transform playerCamera;
     public Slider statusSlider;
-    public float walkSpeed = 6f;
-    public float runSpeed = 12f;
     public float rotationSpeed = 500f;
     public bool localControl = false;
 
@@ -27,18 +25,21 @@ public class PlayerControls : MonoBehaviour
     private bool holdingItem = false;
     private Transform holdingTransform;
 
-    public int numberOfLogs = 0;
+    private PlayerData playerData;
     float pickedUpTime;
+    private Animator animator;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         characterController = GetComponent<CharacterController>();
+        playerData = GetComponent<PlayerData>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         userNote = GameObject.FindWithTag("UserNotifications").GetComponent<TextMeshProUGUI>();
         generators = FindAnyObjectByType<PlacementGenerator>();
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -60,13 +61,14 @@ public class PlayerControls : MonoBehaviour
             right = Vector3.right;
         }
         bool isRunning = Input.GetKey(KeyCode.LeftShift);
-        float curSpeedX = (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Vertical");
-        float curSpeedY = (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Horizontal");
+        float curSpeedX = (isRunning && !holdingItem ? playerData.runSpeed : playerData.walkSpeed) * Input.GetAxis("Vertical");
+        float curSpeedY = (isRunning && !holdingItem ? playerData.runSpeed : playerData.walkSpeed) * Input.GetAxis("Horizontal");
         moveDirection = (forward * curSpeedX) + (right * curSpeedY);
         moveDirection.y = -9.81f;
         characterController.Move(moveDirection * Time.deltaTime);
         if (LastPosition != characterController.transform.position)
         {
+            animator.SetBool("isWalking", true);
             moveDirection.y = 0;
             Quaternion toRotation = Quaternion.LookRotation(moveDirection.normalized, Vector3.up);
             characterController.transform.rotation = Quaternion.RotateTowards(characterController.transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
@@ -83,6 +85,8 @@ public class PlayerControls : MonoBehaviour
                 generators.CheckActive(new Vector2(Mathf.RoundToInt(LastPosition.x), Mathf.RoundToInt(LastPosition.z)));
             }
 
+        } else{
+            animator.SetBool("isWalking",false);
         }
 
         if (isInTrigger && !longHold && Input.GetKeyDown(KeyCode.E))
@@ -110,6 +114,7 @@ public class PlayerControls : MonoBehaviour
     {
         if (other.gameObject.CompareTag("CharacterInteractable"))
         {
+
             isInTrigger = true;
             userNote.enabled = true;
             longHold = false;
@@ -125,12 +130,15 @@ public class PlayerControls : MonoBehaviour
         }
         else if (other.gameObject.CompareTag("CharacterInteractableLong"))
         {
-            isInTrigger = true;
-            userNote.enabled = true;
-            longHold = true;
-            statusSlider.gameObject.SetActive(true);
-            triggerCallback = other.gameObject.GetComponent<interactControl>().callBack();
-            userNote.text = other.gameObject.GetComponent<interactControl>().messageText();
+            if (!holdingItem)
+            {
+                isInTrigger = true;
+                userNote.enabled = true;
+                longHold = true;
+                statusSlider.gameObject.SetActive(true);
+                triggerCallback = other.gameObject.GetComponent<interactControl>().callBack();
+                userNote.text = other.gameObject.GetComponent<interactControl>().messageText();
+            }
         }
     }
 
@@ -159,20 +167,27 @@ public class PlayerControls : MonoBehaviour
         {
             item.transform.SetParent(transform);
             item.transform.localPosition = new Vector3(0, 0, 2f);
-            if (item.transform.rotation.eulerAngles.y < 50f || item.transform.rotation.eulerAngles.y > 130f)
+            // Debug.Log(item.transform.localEulerAngles.y+" compare"+(item.transform.localEulerAngles.y < 50));
+            if (item.transform.localEulerAngles.y < 50 || item.transform.localEulerAngles.y > 310 || (item.transform.localEulerAngles.y > 130 && item.transform.localEulerAngles.y < 230))
             {
-                item.transform.rotation = Quaternion.Euler(item.transform.rotation.eulerAngles.x, 90f, item.transform.rotation.eulerAngles.z);
+                item.transform.localRotation = Quaternion.Euler(item.transform.rotation.eulerAngles.x, 90f, item.transform.rotation.eulerAngles.z);
 
             }
             holdingTransform = item.transform;
             holdingItem = true;
             pickedUpTime = Time.time;
+            OnTriggerExit(item.GetComponent<Collider>());
+            animator.SetTrigger("Pickup");
+            animator.SetBool("Holding",true);
+
         }
     }
     void DropObj()
     {
         if (holdingItem)
         {
+            animator.SetTrigger("DropLog");
+            animator.SetBool("Holding",false);
             holdingTransform.SetParent(null);
             holdingItem = false;
         }
@@ -184,8 +199,10 @@ public class PlayerControls : MonoBehaviour
         {
             holdingTransform.SetParent(null);
             holdingItem = false;
-            numberOfLogs++;
+            playerData.addLog();
             Destroy(holdingTransform.gameObject);
+            animator.SetBool("Holding",false);
         }
     }
+
 }

@@ -28,6 +28,7 @@ public class PlacementGenerator : MonoBehaviour
     private Dictionary<Vector2, GameObject> terrainObjectDictionary = new Dictionary<Vector2, GameObject>();
 
     private List<GameObject> terrainObjectsVisibleLastUpdate = new List<GameObject>();
+    private List<GameObject> terrainObjectsVisibleLastUpdateCp = new List<GameObject>();
 
 
     void Start()
@@ -37,11 +38,11 @@ public class PlacementGenerator : MonoBehaviour
 
     public void CheckActive(Vector2 position)
     {
-        for (int i = 0; i < terrainObjectsVisibleLastUpdate.Count; i++)
-        {
-            terrainObjectsVisibleLastUpdate[i].SetActive(false);
-        }
+        terrainObjectsVisibleLastUpdateCp = new List<GameObject>(terrainObjectsVisibleLastUpdate);
         terrainObjectsVisibleLastUpdate.Clear();
+
+
+        // terrainObjectsVisibleLastUpdate.Clear();
 
         for (int yOffset = -visibleDistanceZBack; yOffset <= visibleDistanceZForward; yOffset++)
         {
@@ -57,6 +58,14 @@ public class PlacementGenerator : MonoBehaviour
                 }
             }
         }
+
+        for (int i = 0; i < terrainObjectsVisibleLastUpdateCp.Count; i++)
+        {
+            if(!terrainObjectsVisibleLastUpdate.Contains(terrainObjectsVisibleLastUpdateCp[i])){
+            terrainObjectsVisibleLastUpdateCp[i].SetActive(false);
+            }
+        }
+        terrainObjectsVisibleLastUpdateCp.Clear();
     }
 
     public void RemoveObject(GameObject genObject){

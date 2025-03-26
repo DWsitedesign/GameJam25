@@ -10,23 +10,42 @@ public class TruckInfo : MonoBehaviour
 
     internal void repair()
     {
-        health+=25;
-        if(health>maxHealth){
-            health=maxHealth;
+        health += 25;
+        if (health > maxHealth)
+        {
+            health = maxHealth;
         }
     }
     internal void fueling()
     {
-        fuel+=10;
-        if(fuel>maxFuel){
-            fuel=maxFuel;
+        fuel += 10;
+        if (fuel > maxFuel)
+        {
+            fuel = maxFuel;
         }
     }
-    internal void pickupFuel(){
-        fuel+=15;
-        if(fuel>maxFuel){
-            fuel=maxFuel;
+    internal void pickupFuel()
+    {
+        fuel += 15;
+        if (fuel > maxFuel)
+        {
+            fuel = maxFuel;
         }
+    }
+
+    internal bool useFuel()
+    {
+        if (fuel <= 0)
+        {
+            return false;
+        }
+        else
+        {
+            fuel -= 2;
+            // Debug.Log(fuel);
+            return true;
+        }
+
     }
 
 }
