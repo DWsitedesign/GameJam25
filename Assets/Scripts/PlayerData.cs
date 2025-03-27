@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerData : MonoBehaviour
 {
@@ -11,13 +12,18 @@ public class PlayerData : MonoBehaviour
     public float walkSpeed = 6f;
     public float runSpeed = 12f;
     public int attackDamage = 10;
+    public float attackFrequency = 1f;
     public int numberOfLogs = 0;
     public int numberOfTimber = 0;
     public int maxNumberOfLogs = 15;
     public int logMarketPrice = 10;
     public int timberMarketPrice = 20;
     public TextMeshProUGUI moneyCounter;
-    private Dictionary<string, int> playerLevels = new Dictionary<string, int>
+    public TextMeshProUGUI timberCounter;
+    public TextMeshProUGUI logCounter;
+    public Slider healthSlider;
+
+    internal Dictionary<string, int> playerLevels = new Dictionary<string, int>
     {
         //Boots (movement)
         {"boots", 0},
@@ -34,6 +40,20 @@ public class PlayerData : MonoBehaviour
         // Player Health
         {"health", 0},
     };
+
+
+    void Start()
+    {
+        SaveData saveData = FindAnyObjectByType<SaveData>();
+        if(saveData){
+            saveData.setPlayerData(this);
+        }
+        depositMoney(0);
+            logCounter.text=numberOfLogs.ToString();
+            timberCounter.text=numberOfTimber.ToString();
+            healthSlider.value=health/maxHealth;
+
+    }
 
     public int getLevel(string playerAtt)
     {
@@ -98,7 +118,10 @@ public class PlayerData : MonoBehaviour
         if (numberOfLogs > maxNumberOfLogs)
         {
             numberOfLogs = maxNumberOfLogs;
+        }else{
+            logCounter.text=numberOfLogs.ToString();
         }
+
     }
 
     internal void sellLogs()
@@ -107,6 +130,7 @@ public class PlayerData : MonoBehaviour
         {
             depositMoney(logMarketPrice);
             numberOfLogs--;
+            logCounter.text=numberOfLogs.ToString();
         }
 
     }
@@ -117,6 +141,21 @@ public class PlayerData : MonoBehaviour
         {
             depositMoney(timberMarketPrice);
             numberOfTimber--;
+            timberCounter.text=numberOfTimber.ToString();
         }
+    }
+    internal void takeDamage(int amount){
+        if (health <= 0)
+        {
+            // todo: make the death splash screen
+            FindAnyObjectByType<MenuManager>().playerDeath();
+            FindAnyObjectByType<PlayerControls>().isDead=true;
+            FindAnyObjectByType<EnemySpawn>().playerDeath();
+        }
+        else
+        {
+            health-=amount;
+        }
+        healthSlider.value=(float)health/maxHealth;
     }
 }

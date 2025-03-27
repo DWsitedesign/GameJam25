@@ -28,6 +28,8 @@ public class PlayerControls : MonoBehaviour
     private PlayerData playerData;
     float pickedUpTime;
     private Animator animator;
+    private float lastAttack = 0;
+    public bool isDead = false;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -39,13 +41,17 @@ public class PlayerControls : MonoBehaviour
         Cursor.visible = false;
         userNote = GameObject.FindWithTag("UserNotifications").GetComponent<TextMeshProUGUI>();
         generators = FindAnyObjectByType<PlacementGenerator>();
-        animator = GetComponent<Animator>();
+        animator = GetComponentInChildren<Animator>();
     }
 
     // Update is called once per frame
     void Update()
 
     {
+        if (isDead)
+        {
+            return;
+        }
         Vector3 forward;
         Vector3 right;
         if (localControl)
@@ -68,7 +74,7 @@ public class PlayerControls : MonoBehaviour
         characterController.Move(moveDirection * Time.deltaTime);
         if (LastPosition != characterController.transform.position)
         {
-            animator.SetBool("isWalking", true);
+            animator.SetFloat("isWalking", 1);
             moveDirection.y = 0;
             Quaternion toRotation = Quaternion.LookRotation(moveDirection.normalized, Vector3.up);
             characterController.transform.rotation = Quaternion.RotateTowards(characterController.transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
@@ -85,12 +91,15 @@ public class PlayerControls : MonoBehaviour
                 generators.CheckActive(new Vector2(Mathf.RoundToInt(LastPosition.x), Mathf.RoundToInt(LastPosition.z)));
             }
 
-        } else{
-            animator.SetBool("isWalking",false);
+        }
+        else
+        {
+            animator.SetFloat("isWalking", 0);
         }
 
         if (isInTrigger && !longHold && Input.GetKeyDown(KeyCode.E))
         {
+            animator.SetTrigger("interact");
             triggerCallback();
         }
         else if (isInTrigger && longHold && Input.GetKey(KeyCode.E))
@@ -99,16 +108,49 @@ public class PlayerControls : MonoBehaviour
             statusSlider.value = holdTimer / holdDuration;
             if (holdTimer >= holdDuration)
             {
+                animator.SetTrigger("interact");
                 triggerCallback();
                 holdTimer = 0;
+                statusSlider.gameObject.SetActive(false);
+
             }
         }
         else if (holdingItem && Time.time - pickedUpTime >= .3f && Input.GetKey(KeyCode.E))
         {
             DropObj();
         }
+        else if (Input.GetKeyDown(KeyCode.E) && Time.timeSinceLevelLoad - playerData.attackFrequency > lastAttack)
+        {
+            // Play attack 
+            // do a raycast in front of the player
+            // do damage for those hit by the raycast
+            swingAttack();
+            animator.SetTrigger("Attack");
+            lastAttack = Time.timeSinceLevelLoad;
+
+        }
 
     }
+    void swingAttack()
+    {
+        Collider[] hitEnemies = Physics.OverlapSphere(transform.position, 10, LayerMask.GetMask("Enemies"));
+        foreach (Collider enemy in hitEnemies)
+        {
+            Vector3 enemyPos = enemy.transform.position;
+            enemyPos.y = 0;
+            Vector3 currentPos = transform.position;
+            currentPos.y = 0;
+            Vector3 directionToEnemy = enemyPos - currentPos;
+            float angle = Vector3.Angle(transform.forward, directionToEnemy);
+            // Debug.Log(angle +" "+enemy.gameObject.name);
+
+            if (angle <= 100 / 2)
+            {
+                enemy.gameObject.GetComponent<EnemyControler>().TakeDamage(10);
+            }
+        }
+    }
+
 
     void OnTriggerEnter(Collider other)
     {
@@ -178,7 +220,7 @@ public class PlayerControls : MonoBehaviour
             pickedUpTime = Time.time;
             OnTriggerExit(item.GetComponent<Collider>());
             animator.SetTrigger("Pickup");
-            animator.SetBool("Holding",true);
+            animator.SetBool("Holding", true);
 
         }
     }
@@ -187,7 +229,7 @@ public class PlayerControls : MonoBehaviour
         if (holdingItem)
         {
             animator.SetTrigger("DropLog");
-            animator.SetBool("Holding",false);
+            animator.SetBool("Holding", false);
             holdingTransform.SetParent(null);
             holdingItem = false;
         }
@@ -201,7 +243,7 @@ public class PlayerControls : MonoBehaviour
             holdingItem = false;
             playerData.addLog();
             Destroy(holdingTransform.gameObject);
-            animator.SetBool("Holding",false);
+            animator.SetBool("Holding", false);
         }
     }
 

@@ -8,6 +8,14 @@ public class TruckInfo : MonoBehaviour
     public int fuel = 100;
     public int maxFuel = 100;
 
+
+    void Start()
+    {
+        SaveData saveData = FindAnyObjectByType<SaveData>();
+        if(saveData){
+            saveData.setTruckData(this);
+        }
+    }
     internal void repair()
     {
         health += 25;
@@ -46,6 +54,17 @@ public class TruckInfo : MonoBehaviour
             return true;
         }
 
+    }
+
+    internal void takeDamage(int damage){
+        if (health <= 0)
+        {
+            // todo: make the death splash screen
+        }
+        else
+        {
+            health-=damage;
+        }
     }
 
 }

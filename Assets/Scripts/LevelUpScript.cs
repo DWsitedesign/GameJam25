@@ -15,6 +15,7 @@ public class LevelUpScript : MonoBehaviour
     void Start()
     {
         playerData = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerData>();
+        // Debug.Log(playerData);
         level = playerData.getLevel(levelAtt.ToString());
         for (int i = 0; i < levels.Length; i++)
         {

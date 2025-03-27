@@ -10,6 +10,13 @@ public class sunControl : MonoBehaviour
     public Transform clock;
     // start day at 180
     public bool dayLightcycle = false;
+    private bool isDay = true;
+    private Light theSun;
+
+    void Start()
+    {
+        theSun = GetComponent<Light>();
+    }
 
 
     // Update is called once per frame
@@ -21,10 +28,20 @@ public class sunControl : MonoBehaviour
         {
             speed = DaySpeed;
             // todo remove light when it is night speed
+            if (!isDay)
+            {
+                theSun.enabled = true;
+                isDay = true;
+            }
         }
         else
         {
             speed = NightSpeed;
+            if (isDay)
+            {
+                theSun.enabled = false;
+                isDay = false;
+            }
         }
         clock.Rotate(new Vector3(0, 0, speed * Time.deltaTime));
         if (dayLightcycle)

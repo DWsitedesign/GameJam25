@@ -12,7 +12,7 @@ public class TruckPlacement : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if (!Physics.Raycast(new Vector3(0,100,0), Vector3.down, out RaycastHit hit, Mathf.Infinity))
+        if (!Physics.Raycast(new Vector3(0,10000,0), Vector3.down, out RaycastHit hit, Mathf.Infinity))
             {
                 return;
             }
@@ -25,12 +25,12 @@ public class TruckPlacement : MonoBehaviour
             instantiatedPrefab.GetComponent<TruckModelSelector>().insertTruckModel(instantiatedPrefab.GetComponentInChildren<TruckInfo>().health);
             truckInfo=instantiatedPrefab.GetComponentInChildren<TruckInfo>();
 
-        if (!Physics.Raycast(new Vector3(0,100,-15), Vector3.down, out RaycastHit playerHit, Mathf.Infinity))
+        if (!Physics.Raycast(new Vector3(0,10000,-15), Vector3.down, out RaycastHit playerHit, Mathf.Infinity))
             {
                 return;
             }
 
-            playerTransform.transform.position = playerHit.point;
+            playerTransform.transform.position = playerHit.point+new Vector3(0,6.7f);
 
         InvokeRepeating("drainTruckFuel",1f,1f);
 

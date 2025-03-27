@@ -124,6 +124,7 @@ public class MapGenerator : MonoBehaviour
 
     MapData GenerateMapData()
     {
+        seed = UnityEngine.Random.Range(0,100000); //todo: remove this random seed to use the seed from the editor
         float[,] noiseMap = Noise.GenerateNoiseMap(mapChunkSize, mapChunkSize, seed, noiseScale, octaves, persistance, lacunarity, offset);
 
         Color[] colorMap = new Color[mapChunkSize * mapChunkSize];
