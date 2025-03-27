@@ -106,7 +106,7 @@ public class PlacementGenerator : MonoBehaviour
             }
 
 
-            GameObject instantiatedPrefab = (GameObject)PrefabUtility.InstantiatePrefab(generateObjects[l].prefabs[UnityEngine.Random.Range(0, generateObjects[l].prefabs.Length)], transform);
+            GameObject instantiatedPrefab = Instantiate(generateObjects[l].prefabs[UnityEngine.Random.Range(0, generateObjects[l].prefabs.Length)], transform);
             instantiatedPrefab.transform.position = hit.point + Vector3.up * generateObjects[l].heightOffGround;
             instantiatedPrefab.transform.Rotate(Vector3.up, UnityEngine.Random.Range(rotationRange.x, rotationRange.y), Space.Self);
             // instantiatedPrefab.transform.rotation=Quaternion.Lerp(transform.rotation,transform.rotation*Quaternion.FromToRotation(instantiatedPrefab.transform.up,hit.normal),rotateTowardsNormal);

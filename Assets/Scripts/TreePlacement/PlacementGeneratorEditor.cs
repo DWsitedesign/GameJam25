@@ -1,6 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
+#if UNITY_EDITOR
 [CustomEditor (typeof(PlacementGenerator))]
 public class PlacementGeneratorEditor : Editor
 {
@@ -21,3 +22,5 @@ public class PlacementGeneratorEditor : Editor
         }
     }
 }
+#endif
+

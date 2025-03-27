@@ -19,7 +19,7 @@ public class TruckModelSelector : MonoBehaviour
         {
             if (truckModels[i].minHealth <= health)
             {
-                GameObject truckModel = (GameObject)PrefabUtility.InstantiatePrefab(truckModels[i].truckPrefab, transform);
+                GameObject truckModel = Instantiate(truckModels[i].truckPrefab, transform);
                 truckModel.transform.parent = transform;
 
                 return;

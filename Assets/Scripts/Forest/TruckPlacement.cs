@@ -17,7 +17,7 @@ public class TruckPlacement : MonoBehaviour
                 return;
             }
 
-            GameObject instantiatedPrefab = (GameObject)PrefabUtility.InstantiatePrefab(prefabTruck, transform);
+            GameObject instantiatedPrefab = Instantiate(prefabTruck, transform);
             instantiatedPrefab.transform.position = hit.point;
             instantiatedPrefab.transform.Rotate(Vector3.up, UnityEngine.Random.Range(0, 360), Space.Self);
             // instantiatedPrefab.transform.rotation=Quaternion.Lerp(transform.rotation,transform.rotation*Quaternion.FromToRotation(instantiatedPrefab.transform.up,hit.normal),rotateTowardsNormal);

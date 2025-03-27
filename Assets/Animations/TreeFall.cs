@@ -33,7 +33,7 @@ public class TreeFall : MonoBehaviour
         GameObject instantiatedPrefab;
         for (int i = 0; i <= Random.Range(0, 2); i++)
         {
-            instantiatedPrefab = (GameObject)PrefabUtility.InstantiatePrefab(prefabLog);
+            instantiatedPrefab = Instantiate(prefabLog);
             instantiatedPrefab.transform.position = transform.position + directionToStick.normalized * (2 * (i + 1)) + directionToStick.normalized * (i * 3);
             instantiatedPrefab.transform.Rotate(Vector3.up, transform.rotation.eulerAngles.y, Space.Self);
         }

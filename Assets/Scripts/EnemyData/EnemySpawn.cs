@@ -41,7 +41,7 @@ public class EnemySpawn : MonoBehaviour
                 continue;
             }
 
-            GameObject instantiatedPrefab = (GameObject)PrefabUtility.InstantiatePrefab(enemyPrefab, transform);
+            GameObject instantiatedPrefab = Instantiate(enemyPrefab, transform);
             instantiatedPrefab.transform.position = hit.point;
             // Debug.Log(hit.point);
             // Debug.Log(instantiatedPrefab.transform.position);
